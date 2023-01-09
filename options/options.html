@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<ent-lang lang="en">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>AdFocus Skip Options</title>
+        <link rel="stylesheet" href="options.css">
+    </head>
+
+    <body>
+        <header>
+            <h2>Adfocus Skip</h2>
+        </header>
+        <div class="container">
+            <div class="button-container">
+                <label class="power-button">
+                    <input type="checkbox" name="checkbox" id="adfocskip-enabled">
+                    <img class="button-icon" src="../images/power-button.png" alt="On/Off button" width="100" height="100">
+                </label>
+            </div>
+
+            <div class="options-container">
+                <span class="label">Show skip button</span>
+                <label class="switch">
+                    <input type="checkbox" name="checkbox" id="show-skip">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="options-container">
+                <span class="label">Enable redirect</span>
+                <label class="switch">
+                    <input type="checkbox" name="checkbox" id="enable-redirect">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="count-container">
+                <span id="count"></span>    
+            </div>
+
+            <script src="options.js"></script>
+
+        </div>
+    </body>
+</html>

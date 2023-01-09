@@ -1,0 +1,37 @@
+{
+    "name": "AdFocSkip",
+    "description": "Skips ads from AdFoc",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+        "16": "/images/icon-16x16.png",
+        "32": "/images/icon-32x32.png",
+        "48": "/images/icon-48x48.png",
+        "128": "/images/icon-128x128.png"
+    },
+    "action": {
+        "default_popup": "options/options.html",
+        "default_icon": {
+            "16": "/images/icon-16x16.png",
+            "32": "/images/icon-32x32.png",
+            "48": "/images/icon-48x48.png",
+            "128": "/images/icon-128x128.png"
+        }
+    },
+    "options_ui": {
+        "page": "options/options.html",
+        "open_in_tab": false
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://adfoc.us/serve/*"],
+            "js": ["script.js"]
+        }
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "storage"
+    ]
+}
