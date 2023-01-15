@@ -1,28 +1,29 @@
 function save_options() {
-    var adfocusSkipEnabled = document.getElementById('adfocskip-enabled').checked;
-    var showSkip = document.getElementById('show-skip').checked;
-    var enableRedirect = document.getElementById('enable-redirect').checked;
+    let extensionEnabled = document.getElementById('extension-enabled').checked;
+    let showSkip = document.getElementById('show-skip').checked;
+    let redirectEnabled = document.getElementById('redirect-enabled').checked;
 
     chrome.storage.sync.set({
-        'adfocusSkipEnabled': adfocusSkipEnabled,
+        'extensionEnabled': extensionEnabled,
         'showSkip': showSkip,
-        'enableRedirect': enableRedirect
+        'redirectEnabled': redirectEnabled
     }, function() {
         console.log('saved');
     });
 }
 
 function restore_options() {
-    chrome.storage.sync.get(['adfocusSkipEnabled', 'enableRedirect', 'showSkip'], function(items) {
-      document.getElementById('adfocskip-enabled').checked = items.adfocusSkipEnabled;
-      document.getElementById('show-skip').checked = items.showSkip;
-      document.getElementById('enable-redirect').checked = items.enableRedirect;
+    chrome.storage.sync.get(['extensionEnabled', 'redirectEnabled', 'showSkip'], function(items) {
+        document.getElementById('extension-enabled').checked = items.extensionEnabled;
+        document.getElementById('show-skip').checked = items.showSkip;
+        document.getElementById('redirect-enabled').checked = items.redirectEnabled;
     });
 }
 
 function restore_count() {
     chrome.storage.sync.get(['count'], function(items) {
-      document.getElementById('count').textContent = items.count + " ads skipped";
+        let countStr = items.count + (items.count == 1 ? " ad skipped" : " ads skipped");
+        document.getElementById('count').textContent = countStr;
     });
 }
 

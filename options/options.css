@@ -1,10 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 body {
-  color: white;
+  color: black;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  background-color: rgb(18, 18, 18);
+  background-color: rgb(255, 255, 255);
 }
+
+h2 {
+  color: rgb(0,67,127);
+}
+
+.multi-colored {
+  color: rgb(0,134,217);
+}
+
 
 .count-container {
   text-align: center;
@@ -13,7 +22,7 @@ body {
 .container {
     margin: auto;
     width: 200px;
-    background-color: rgb(29,29,29);
+    background-color: rgb(213,213,213);
     padding: 0px 10px 5px;
     border-radius: 10px;
 }
@@ -21,7 +30,7 @@ body {
 .options-container {
     width: 90%;
     display: inline-flex;
-    background-color: rgb(46,46,46);
+    background-color: rgb(223,223,223);
     margin-bottom: 5px;
     padding: 10px;
     border-radius: 10px
@@ -85,28 +94,22 @@ header{
 
   .button-icon:hover{
     cursor: pointer;
-    -webkit-transition: .5s;
-    transition: .5;
   }
 
   .button-icon{
-    -webkit-transition: .5s;
-    transition: .5;
-    filter: invert(7%) sepia(3%) saturate(20%) hue-rotate(331deg) brightness(101%) contrast(100%);
+    filter: invert(70%) sepia(3%) saturate(20%) hue-rotate(331deg) brightness(101%) contrast(100%);
   }
 
   input:checked + .button-icon {
-    filter: invert(75%) sepia(59%) saturate(517%) hue-rotate(69deg) brightness(88%) contrast(91%);
-    -webkit-transition: .5s;
-    transition: .5;
+    filter: invert(42%) sepia(90%) saturate(1631%) hue-rotate(172deg) brightness(90%) contrast(101%);
   }
   
   input:checked + .slider {
-    background-color: rgb(74, 216, 98);
+    background-color: rgb(0,147,221);
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px rgb(74, 216, 98);
+    box-shadow: 0 0 1px rgb(0,147,221);
   }
   
   input:checked + .slider:before {
