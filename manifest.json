@@ -1,6 +1,6 @@
 {
-    "name": "AdFocSkip",
-    "description": "Skips ads from AdFoc",
+    "name": "Reddit Image Preview",
+    "description": "Shrinks oversized images in reddit to fit the container",
     "version": "1.0",
     "manifest_version": 3,
     "icons": {
@@ -24,7 +24,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://adfoc.us/serve/*"],
+            "matches": ["https://www.reddit.com/*"],
             "js": ["script.js"]
         }
     ],

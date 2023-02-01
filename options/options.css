@@ -3,43 +3,19 @@
 body {
   color: black;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(3,3,3);
 }
 
 h2 {
-  color: rgb(0,67,127);
-}
-
-.multi-colored {
-  color: rgb(0,134,217);
-}
-
-
-.count-container {
-  text-align: center;
+  color: rgb(255, 255, 255)
 }
 
 .container {
     margin: auto;
     width: 200px;
-    background-color: rgb(213,213,213);
+    background-color: rgb(26,26,27);
     padding: 0px 10px 5px;
     border-radius: 10px;
-}
-
-.options-container {
-    width: 90%;
-    display: inline-flex;
-    background-color: rgb(223,223,223);
-    margin-bottom: 5px;
-    padding: 10px;
-    border-radius: 10px
-}
-
-.options-container .label{
-    margin-top: 2px;
-    font-size: 14px;
-    width: 170px;
 }
 
 header{
@@ -52,77 +28,23 @@ header{
     padding: 0px 10px 10px;
 }
 
+input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 45px;
-    height: 22px;
-  }
-  
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+.button-icon:hover{
+  cursor: pointer;
+}
 
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 24px;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 2px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 50%;
-  }
+.button-icon{
+  filter: invert(70%) sepia(3%) saturate(20%) hue-rotate(331deg) brightness(101%) contrast(100%);
+}
 
-  .button-icon:hover{
-    cursor: pointer;
-  }
+input:checked + .button-icon {
+  filter: invert(33%) sepia(34%) saturate(5586%) hue-rotate(360deg) brightness(104%) contrast(107%);
+}
 
-  .button-icon{
-    filter: invert(70%) sepia(3%) saturate(20%) hue-rotate(331deg) brightness(101%) contrast(100%);
-  }
 
-  input:checked + .button-icon {
-    filter: invert(42%) sepia(90%) saturate(1631%) hue-rotate(172deg) brightness(90%) contrast(101%);
-  }
-  
-  input:checked + .slider {
-    background-color: rgb(0,147,221);
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px rgb(0,147,221);
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(14px);
-    -ms-transform: translateX(14px);
-    transform: translateX(14px);
-  }
-  
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
- 
+
