@@ -13,7 +13,7 @@ async function get_options() {
 function set_image_height(element, querySelector, height) {
   const parent = element.parentElement;
   const image = parent.querySelector(querySelector);
-  console.log(image);
+
   if (image) {
     image.style.height = height;
   }
@@ -51,6 +51,16 @@ async function main() {
 
   if (!options.extensionEnabled) return;
   
+  const mainContentContainer = document.querySelector(`.${MAIN_CONTENT_CLASS}`);
+  const childNodes = mainContentContainer.childNodes;
+
+  // Shrink existing images on page load
+  childNodes.forEach((element) => {
+    console.log('test')
+    shrink_preview_image(element);
+  });
+
+  // Shrink new images as they are added
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       if (mutation.type == "childList") {
@@ -60,7 +70,7 @@ async function main() {
     });
   });
 
-  const targetNode = document.querySelector(`.${MAIN_CONTENT_CLASS}`);
+  const targetNode = mainContentContainer;
   if (targetNode) observer.observe(targetNode, { childList: true});
 }
 
