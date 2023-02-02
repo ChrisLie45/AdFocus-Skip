@@ -1,8 +1,9 @@
-const MAIN_CONTENT_CLASS = 'rpBJOHq2PR60pnwJlUyP0';
+const MAIN_CONTAINER_CLASS = 'hciOr5UGrnYrZxB11tX9s';
+const POST_CONTAINER_CLASS = 'rpBJOHq2PR60pnwJlUyP0';
 const PREVIEW_IMAGE_CLASS = '_3hUbl08LBz2mbXjy0iYhOS';
 const MULT_PREVIEW_IMAGE_CLASS = '_3b8u2OJXaSDdBWoRB7zUoK';
 
-async function get_options() {
+async function getOptions() {
   return await new Promise(function(resolve) {
     chrome.storage.sync.get(['extensionEnabled'], function(items) {
       resolve(items);
@@ -10,7 +11,7 @@ async function get_options() {
   });
 }
 
-function set_image_height(element, querySelector, height) {
+function setImageHeight(element, querySelector, height) {
   const parent = element.parentElement;
   const image = parent.querySelector(querySelector);
 
@@ -19,59 +20,66 @@ function set_image_height(element, querySelector, height) {
   }
 }
 
-function shrink_preview_image(element) {
+function shrinkPostImage(element) {
   const previewImage = element.querySelector(`.${PREVIEW_IMAGE_CLASS}`);
   const multiPreviewImage = element.querySelectorAll(`.${MULT_PREVIEW_IMAGE_CLASS}`);
   const height = "512px" // Default height of post container
   
   if (previewImage) {
-    set_image_height(previewImage, 'img[alt="Post image"]', height);
+    setImageHeight(previewImage, 'img[alt="Post image"]', height);
   } 
 
   if (multiPreviewImage) {
     // Wait for images to load before setting height
     multiPreviewImage.forEach((element) => {
-      const observer1 = new MutationObserver(function(mutations) {
+      const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           if (mutation.type == "childList") {
-            set_image_height(element, '._1dwExqTGJH2jnA-MYGkEL-', height);
-            observer1.disconnect();
+            setImageHeight(element, '._1dwExqTGJH2jnA-MYGkEL-', height);
+            observer.disconnect();
           }
         });
       });
 
-      const targetNode1 = element.parentElement;
-      observer1.observe(targetNode1, { childList: true});
+      const targetNode = element.parentElement;
+      observer.observe(targetNode, { childList: true});
     });
   }
 }
 
 async function main() {
-  const options = await get_options();
+  const options = await getOptions();
 
   if (!options.extensionEnabled) return;
   
-  const mainContentContainer = document.querySelector(`.${MAIN_CONTENT_CLASS}`);
-  const childNodes = mainContentContainer.childNodes;
-
-  // Shrink existing images on page load
-  childNodes.forEach((element) => {
-    console.log('test')
-    shrink_preview_image(element);
-  });
-
-  // Shrink new images as they are added
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
-      if (mutation.type == "childList") {
-        const addedNode = mutation.addedNodes[0];
-        shrink_preview_image(addedNode);
+      if (mutation.type != "childList") return;
+
+      const addedNode = mutation.addedNodes[0];
+
+      if (!addedNode) return; 
+
+      const parent = addedNode.parentElement;
+
+      if (!parent) return;
+
+      if (parent.classList.contains(POST_CONTAINER_CLASS)) {
+        // Shrink existing images on page load
+        // 14 is an arbitrary number for minimum number of loaded posts
+        if (parent.childNodes.length < 14) {
+          parent.childNodes.forEach((element) => {
+            shrinkPostImage(element);
+          });
+        } else {
+          shrinkPostImage(addedNode);
+        }
       }
     });
   });
 
-  const targetNode = mainContentContainer;
-  if (targetNode) observer.observe(targetNode, { childList: true});
+  const targetNode = document.querySelector(`.${MAIN_CONTAINER_CLASS}`);
+  observer.observe(targetNode, { childList: true, subtree: true});
 }
 
 main();

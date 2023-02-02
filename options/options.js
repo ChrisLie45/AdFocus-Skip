@@ -1,4 +1,4 @@
-function save_options() {
+function saveOptions() {
     let extensionEnabled = document.getElementById('extension-enabled').checked;
 
     chrome.storage.sync.set({
@@ -8,15 +8,15 @@ function save_options() {
     });
 }
 
-function restore_options() {
+function restoreOptions() {
     chrome.storage.sync.get(['extensionEnabled'], function(items) {
         document.getElementById('extension-enabled').checked = items.extensionEnabled;
     });
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', restoreOptions);
 
 document.querySelectorAll("input[name=checkbox]").forEach(function(checkbox) {
-    checkbox.addEventListener('change', save_options);
+    checkbox.addEventListener('change', saveOptions);
     console.log(checkbox);
 });
