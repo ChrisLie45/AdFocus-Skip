@@ -1,11 +1,12 @@
 const MAIN_CONTAINER_CLASS = 'hciOr5UGrnYrZxB11tX9s';
 const POST_CONTAINER_CLASS = 'rpBJOHq2PR60pnwJlUyP0';
-const PREVIEW_IMAGE_CLASS = '_3hUbl08LBz2mbXjy0iYhOS';
-const MULT_PREVIEW_IMAGE_CLASS = '_3b8u2OJXaSDdBWoRB7zUoK';
+const PREVIEW_IMAGE_LABEL_CLASS = '_3hUbl08LBz2mbXjy0iYhOS';
+const MULTI_PREVIEW_IMAGE_LABEL_CLASS = '_3b8u2OJXaSDdBWoRB7zUoK';
+const MIN_POSTS = 14; // 14 is an arbitrary number for minimum number of loaded posts
 
 async function getOptions() {
   return await new Promise(function(resolve) {
-    chrome.storage.sync.get(['extensionEnabled'], function(items) {
+    chrome.storage.sync.get(['extensionEnabled', 'hideLabel'], function(items) {
       resolve(items);
     });
   });
@@ -21,17 +22,17 @@ function setImageHeight(element, querySelector, height) {
 }
 
 function shrinkPostImage(element) {
-  const previewImage = element.querySelector(`.${PREVIEW_IMAGE_CLASS}`);
-  const multiPreviewImage = element.querySelectorAll(`.${MULT_PREVIEW_IMAGE_CLASS}`);
+  const previewImageLabel = element.querySelector(`.${PREVIEW_IMAGE_LABEL_CLASS}`);
+  const multiPreviewImageLabel = element.querySelectorAll(`.${MULTI_PREVIEW_IMAGE_LABEL_CLASS}`);
   const height = "512px" // Default height of post container
   
-  if (previewImage) {
-    setImageHeight(previewImage, 'img[alt="Post image"]', height);
+  if (previewImageLabel) {
+    setImageHeight(previewImageLabel, 'img[alt="Post image"]', height);
   } 
 
-  if (multiPreviewImage) {
+  if (multiPreviewImageLabel) {
     // Wait for images to load before setting height
-    multiPreviewImage.forEach((element) => {
+    multiPreviewImageLabel.forEach((element) => {
       const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           if (mutation.type == "childList") {
@@ -43,6 +44,21 @@ function shrinkPostImage(element) {
 
       const targetNode = element.parentElement;
       observer.observe(targetNode, { childList: true});
+    });
+  }
+}
+
+function hidePostLabel(element) {
+  const previewImageLabel = element.querySelector(`.${PREVIEW_IMAGE_LABEL_CLASS}`);
+  const multiPreviewImageLabel = element.querySelectorAll(`.${MULTI_PREVIEW_IMAGE_LABEL_CLASS}`);
+
+  if (previewImageLabel) {
+    previewImageLabel.style.display = "none";
+  } 
+
+  if (multiPreviewImageLabel) {
+    multiPreviewImageLabel.forEach((element) => {
+      element.style.display = "none";
     });
   }
 }
@@ -64,16 +80,25 @@ async function main() {
 
       if (!parent) return;
 
-      if (parent.classList.contains(POST_CONTAINER_CLASS)) {
-        // Shrink existing images on page load
-        // 14 is an arbitrary number for minimum number of loaded posts
-        if (parent.childNodes.length < 14) {
-          parent.childNodes.forEach((element) => {
-            shrinkPostImage(element);
-          });
-        } else {
-          shrinkPostImage(addedNode);
+      if (!parent.classList.contains(POST_CONTAINER_CLASS)) return; 
+
+      if (parent.childNodes.length < MIN_POSTS) {
+        // Apply settings to all pre loaded posts
+        parent.childNodes.forEach((element) => {
+          shrinkPostImage(element);
+
+          if (options.hideLabel) {
+            hidePostLabel(element)
+          }
+
+        });
+      } else { 
+        shrinkPostImage(addedNode);
+
+        if (options.hideLabel) {
+          hidePostLabel(addedNode)
         }
+
       }
     });
   });
