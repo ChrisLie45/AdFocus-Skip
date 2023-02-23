@@ -1,7 +1,7 @@
 {
     "name": "Reddit Full Image Preview",
     "description": "Shrinks oversized images in reddit to fit the container",
-    "version": "0.0.0.5",
+    "version": "0.0.0.6",
     "manifest_version": 3,
     "icons": {
         "16": "/images/icon-16x16.png",
