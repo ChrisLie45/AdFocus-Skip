@@ -58,55 +58,63 @@ function shrinkPostImage(element) {
   }
 }
 
-function expandPostImage(element) {
+function resizePostContainer(element, isExpand) {
   const previewImageLabel = element.querySelector(`.${PREVIEW_IMAGE_LABEL_CLASS}`);
   const multiPreviewImageLabel = element.querySelectorAll(`.${MULTI_PREVIEW_IMAGE_LABEL_CLASS}`);
 
   if (previewImageLabel) {
-    const image = element.querySelector('img[alt="Post image"]');
-    const imageContainer = element.querySelector(`.${IMAGE_CONTAINER_CLASS}`);
-    const imageContainerContainer = element.querySelector(`.${IMAGE_CONTAINER_CONTAINER_CLASS}`);
-
-    image.style.height = null;
-    imageContainer.style.maxHeight = null;
-
-    const height = image.height + "px";
-
-    imageContainerContainer.style.height = height;
+    resizeSingleImageContainer(element, isExpand);
   }
 
   if (multiPreviewImageLabel.length > 0) {
+    resizeMultiImageContainer(element, isExpand);
+  }
+}
 
-    let height = 0;
-    multiPreviewImageLabel.forEach((label) => {
-      const parent = label.parentElement;
-      const image = parent.querySelector('._1dwExqTGJH2jnA-MYGkEL-');
-      
-      image.style.height = null;
+function resizeSingleImageContainer(element, isExpand) {
+  const image = element.querySelector('img[alt="Post image"]');
+  const imageContainer = element.querySelector(`.${IMAGE_CONTAINER_CLASS}`);
+  const imageContainerContainer = element.querySelector(`.${IMAGE_CONTAINER_CONTAINER_CLASS}`);
 
-      // Get height of largest image to set height of container
-      if (image.naturalHeight > height) {
-        height = image.height;
-      }
-    });
+  if (isExpand) {
+    image.style.height = null;
+    imageContainer.style.maxHeight = null;
+    imageContainerContainer.style.height = image.height + "px";
+  } else {
+    image.style.height = "512px";
+    imageContainer.style.maxHeight = "512px";
+    imageContainerContainer.style.height = "512px";
+  }
+}
 
-    height = height + 35 + "px";
+function resizeMultiImageContainer(element, isExpand) {
+  const images = element.querySelectorAll('._1dwExqTGJH2jnA-MYGkEL-');
+  let height = 0;
+  
+  images.forEach((image) => {
+    image.style.height = isExpand ? null : "512px";
 
-    const container1 = element.querySelector('.STit0dLageRsa2yR4te_b');
-    const container2 = element.querySelector('.m3aNC6yp8RrNM_-a0rrfa');
-    const container3 = element.querySelector('._3gBRFDB5C34UWyxEe_U6mD');
-    const container4 = element.querySelector('.KVyBaj7FjzElWsqJDmw7v');
-
-    container1.style.height = height;
-    container2.style.maxHeight = height;
-    container3.style.paddingBottom = height;
-    container4.style.height = height;
-
-    // Lazy fix for post with captions
-    const caption = element.querySelectorAll('._15nNdGlBIgryHV04IfAfpA');
-    if (caption) {
-      container4.style.height = container4.offsetHeight-35 + "px";
+    if (image.naturalHeight > height) {
+      height = image.height;
     }
+  });
+
+  height = isExpand ? height + 35 + "px" : "512px";
+
+  const container1 = element.querySelector('.STit0dLageRsa2yR4te_b');
+  const container2 = element.querySelector('.m3aNC6yp8RrNM_-a0rrfa');
+  const container3 = element.querySelector('._3gBRFDB5C34UWyxEe_U6mD');
+  const container4 = element.querySelector('.KVyBaj7FjzElWsqJDmw7v');
+
+  container1.style.height = height;
+  container2.style.maxHeight = height;
+  container3.style.paddingBottom = height;
+  container4.style.height = height;
+
+  // Lazy fix for post with captions
+  const caption = element.querySelectorAll('._15nNdGlBIgryHV04IfAfpA');
+  if (caption) {
+    container4.style.height = container4.offsetHeight-35 + "px";
   }
 }
 
@@ -124,7 +132,10 @@ function addExpandButton(element) {
   buttonIcon.classList.add('icon', 'icon-expand');
   buttonIcon.style.paddingRight = "5px";
   button.addEventListener("click", function () {
-    expandPostImage(element);
+    let isExpand = buttonSpan.textContent === "Expand";
+
+    resizePostContainer(element, isExpand);
+    buttonSpan.textContent = isExpand ? "Shrink" : "Expand";
   });
 
   button.appendChild(buttonIcon);
